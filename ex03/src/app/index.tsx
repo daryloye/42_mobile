@@ -2,19 +2,20 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Numpad } from '../components/Numpad';
-import * as colours from '../config/colours';
+import * as colours from '../utils/colours';
 
 export default function CalculatorScreen() {
-  const [input, setInput] = useState<string>('0');
+  const [input, setInput] = useState<string>('');
+  const [result, setResult] = useState<string>('');
   
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
       <View style={{flex: 1}}>
         <Text style={[styles.expression, styles.text]}>{input}</Text>
-        <Text style={[styles.result, styles.text]}>0</Text>
+        <Text style={[styles.result, styles.text]}>{result}</Text>
       </View>
       <View style={{flex: 1}}>
-        <Numpad setInput={setInput} input={input}/>
+        <Numpad setInput={setInput} setResult={setResult}/>
       </View>
     </SafeAreaView>
   );
