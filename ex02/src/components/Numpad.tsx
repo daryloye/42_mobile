@@ -29,7 +29,7 @@ export function Numpad() {
         <NumpadButton text="0" color="black" />
         <NumpadButton text="." color="black" />
         <NumpadButton text="00" color="black" />
-        <NumpadButton text="-" color="white" />
+        <NumpadButton text="=" color="white" />
         <NumpadButton text="" color="white" />
       </View>
     </View>

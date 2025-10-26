@@ -11,7 +11,7 @@ export default function CalculatorScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
       <View style={{flex: 1}}>
-        <Text style={[styles.expression, styles.text]}>{input}</Text>
+        <Text style={[styles.input, styles.text]}>{input}</Text>
         <Text style={[styles.result, styles.text]}>{result}</Text>
       </View>
       <View style={{flex: 1}}>
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colours.numpad_colour,
   },
-  expression: {
+  input: {
     height: 60,
     backgroundColor: colours.display_colour,
   },

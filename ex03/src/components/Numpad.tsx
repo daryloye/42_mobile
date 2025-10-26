@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { processInput, processResult } from '../utils/calculations';
 import * as colours from '../utils/colours';
 
 
@@ -35,7 +36,7 @@ export function Numpad({ setInput, setResult }: NumpadProps) {
         <NumpadButton text="0" color="black" setInput={setInput} setResult={setResult}/>
         <NumpadButton text="." color="black" setInput={setInput} setResult={setResult}/>
         <NumpadButton text="00" color="black" setInput={setInput} setResult={setResult}/>
-        <NumpadButton text="-" color="white" setInput={setInput} setResult={setResult}/>
+        <NumpadButton text="=" color="white" setInput={setInput} setResult={setResult}/>
         <NumpadButton text="" color="white" setInput={setInput} setResult={setResult}/>
       </View>
     </View>
@@ -50,28 +51,12 @@ type NumpadButtonProps = {
 };
 
 function NumpadButton({ text, color, setInput, setResult }: NumpadButtonProps) {  
-
-
+  
   const handleInput = (text: string) => {
     console.log("button pressed:", text);
     setInput(prev => {
-      if (typeof text === "number") {
-        return prev + text;
-      } else if (text === "AC") {
-        // clear input and result
-        setResult('');
-        return '';
-      } else if (text === "C") {
-        // remove last character from input
-        if (prev !== "") {
-          return prev.substring(0, prev.length - 1);
-        }
-      } else if (text === '.') {
-        if (prev !== '' &&
-          typeof 
-        )
-      }
-      return prev + text
+      processResult(prev, text, setResult);
+      return processInput(prev, text);
     });
   }
   
