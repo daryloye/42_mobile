@@ -1,18 +1,20 @@
 import { Stack } from "expo-router";
-import * as colours from '../utils/colours';
+import { Header } from '../components/Header';
+import { SearchProvider } from '../components/SearchProvider';
 
 export default function RootLayout() {
     return (
-        <Stack
-            screenOptions={{
-                headerTitleAlign: 'center',
-                headerTintColor: 'white',
-                headerStyle: {
-                    backgroundColor: colours.numpad_colour,
-                },
-            }}
-        >
-            <Stack.Screen name="index" options={{ title: "Calculator" }} />
-        </Stack>
+        <SearchProvider>
+            <Stack
+                screenOptions={{
+                    headerTitle: () => <Header />,
+                    headerStyle: {
+                        backgroundColor: '#5b5d72',
+                    },
+                }}
+            >
+                <Stack.Screen name="(tabs)" />
+            </Stack>
+        </SearchProvider>
     );
 }
