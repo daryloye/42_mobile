@@ -5,7 +5,7 @@ import { SearchContext } from '../../components/SearchProvider';
 
 
 export default function WeeklyScreen() {
-  const { search, setSearch } = useContext(SearchContext);
+  const { search } = useContext(SearchContext);
   
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>

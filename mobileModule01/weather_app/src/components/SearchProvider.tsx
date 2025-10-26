@@ -5,7 +5,10 @@ type SearchContextType = {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export const SearchContext = createContext<SearchContextType | null>(null);
+export const SearchContext = createContext<SearchContextType>({
+    search: '',
+    setSearch: () => {}
+});
 
 type SearchProviderProps = {
     children: ReactNode;
