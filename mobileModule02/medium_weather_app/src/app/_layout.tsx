@@ -1,20 +1,22 @@
 import { Stack } from "expo-router";
 import { Header } from '../components/Header';
-import { SearchProvider } from '../components/SearchProvider';
+import { CoordinateProvider } from '../utils/coordinateProvider';
 
 export default function RootLayout() {
     return (
-        <SearchProvider>
+        <CoordinateProvider>
+            <Header />
             <Stack
                 screenOptions={{
-                    headerTitle: () => <Header />,
-                    headerStyle: {
-                        backgroundColor: '#5b5d72',
-                    },
+                    headerShown: false
+                    // headerTitle: () => <Header />,
+                    // headerStyle: {
+                    //     backgroundColor: '#5b5d72',
+                    // },
                 }}
             >
                 <Stack.Screen name="(tabs)" />
             </Stack>
-        </SearchProvider>
+        </CoordinateProvider>
     );
 }

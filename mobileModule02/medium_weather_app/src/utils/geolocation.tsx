@@ -1,11 +1,7 @@
 import * as Location from 'expo-location';
+import { CoordinateType } from './coordinateProvider';
 
-export type LocationType = {
-    longitude: number,
-    latitude: number,
-} | null
-
-export async function getCurrentLocation(): Promise<LocationType> {
+export async function getCurrentLocation(): Promise<CoordinateType> {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
         console.log('Permission to access location was denied');

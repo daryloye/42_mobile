@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { SearchContext } from '../../components/SearchProvider';
+import { CoordinateContext } from '../../utils/coordinateProvider';
 
 
 export default function TodayScreen() {
-  const { search } = useContext(SearchContext);
+  const { coordinate: search } = useContext(CoordinateContext);
   
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>

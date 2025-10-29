@@ -1,14 +1,15 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useContext } from 'react';
 import { Pressable } from 'react-native';
+import { CoordinateContext } from '../utils/coordinateProvider';
 import { getCurrentLocation } from '../utils/geolocation';
-import { SearchContext } from './SearchProvider';
 
 export function GeolocationButton() {
-    const { setSearch } = useContext(SearchContext);
+    const { coordinate, setCoordinate } = useContext(CoordinateContext);
+    
     const handlePress = async () => {
         const location = await getCurrentLocation();
-        setSearch(location);
+        setCoordinate(location);
     }
 
     return (

@@ -1,11 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { GeolocationButton } from './GeolocationButton';
 import { SearchBar } from './SearchBar';
 
 export function Header() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.left}>
         <Ionicons name="search-outline" size={20} color='white' />
         <SearchBar />
@@ -14,15 +15,20 @@ export function Header() {
         <View style={styles.verticalLine} />
         <GeolocationButton />
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    backgroundColor: '#5b5d72',
+    height: 90,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    position: 'relative', // allow child absolute positioning
+    zIndex: 10,           // allow search list to overlay
   },
   left: {
     flex: 1,
@@ -30,7 +36,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   right: {
-    marginLeft: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -38,7 +43,6 @@ const styles = StyleSheet.create({
     width: 1,
     height: 30,
     backgroundColor: 'white',
-    marginRight: 20,
-    marginLeft: 10,
+    marginHorizontal: 15,
   },
 });
