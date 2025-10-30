@@ -4,12 +4,12 @@ import { useAppContext } from '../utils/appContext';
 import { getCurrentLocation } from '../utils/geolocation';
 
 export function GeolocationButton() {
-    const { setCoordinate } = useAppContext();
+    const { setLocation } = useAppContext();
     
     const handlePress = async () => {
         console.log('Pressed Geolocation Button');
         const location = await getCurrentLocation();
-        setCoordinate(location);
+        setLocation(location);
     }
 
     return (

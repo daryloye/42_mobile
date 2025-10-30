@@ -1,20 +1,48 @@
-import { StyleSheet, Text } from "react-native";
+import { useEffect, useState } from 'react';
+import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CurrentWeatherType, fetchCurrentWeather } from '../../utils/api';
 import { useAppContext } from '../../utils/appContext';
 
 export default function CurrentScreen() {
-  const { coordinate } = useAppContext();
+  const { location, setLocationList } = useAppContext();
+  const [data, setData] = useState<CurrentWeatherType | null>(null);
+
+  useEffect(() => {
+    const updatePage = async () => {
+      if (location) {
+        const weatherData = await fetchCurrentWeather(location);
+        setData(weatherData);
+      }
+    }
+
+    updatePage();
+  }, [location])
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
-      {coordinate === null ? (
-        <Text style={styles.error}>
-          Geolocation is not available, please enable it in your App settings
-        </Text>
-      ) : (
-          <Text style={styles.text}>Currently{'\n'}{coordinate.latitude} {coordinate.longitude}</Text>
-      )}
-    </SafeAreaView>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+        setLocationList(null);
+      }}
+    >
+      <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
+        {location === null ? (
+          <Text style={styles.error}>
+            Geolocation is not available, please enable it in your App settings
+          </Text>
+        ) : (
+          <Text style={styles.text}>
+            {location.city}{'\n'}
+            {location.region}{'\n'}
+            {location.country}{'\n'}
+            {data?.temperature.toFixed(1)} °C{'\n'}
+            {data?.weather}{'\n'}
+            {data?.wind_speed.toFixed(1)} km/h
+          </Text>
+        )}
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -28,7 +56,6 @@ const styles = StyleSheet.create({
   text: {
     color: "black",
     fontSize: 24,
-    fontWeight: 'bold',
     textAlign: 'center',
   },
   error: {

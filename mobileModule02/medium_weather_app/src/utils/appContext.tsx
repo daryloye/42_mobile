@@ -1,15 +1,9 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { getCurrentLocation } from './geolocation';
 
-export type CoordinateType = {
-    longitude: number;
-    latitude: number;
-}
-
 export type LocationType = {
-    id: number,
-    name: string,
-    admin1: string,
+    city: string,
+    region: string,
     country: string,
     latitude: number,
     longitude: number,
@@ -19,8 +13,8 @@ export type LocationType = {
 // AppContext
 
 type AppContextType = {
-    coordinate: CoordinateType | null;
-    setCoordinate: React.Dispatch<React.SetStateAction<CoordinateType | null>>;
+    location: LocationType | null;
+    setLocation: React.Dispatch<React.SetStateAction<LocationType | null>>;
     locationList: LocationType[] | null;
     setLocationList: React.Dispatch<React.SetStateAction<LocationType[] | null>>;
 };
@@ -28,14 +22,14 @@ type AppContextType = {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-    const [coordinate, setCoordinate] = useState<CoordinateType | null>(null);
+    const [location, setLocation] = useState<LocationType | null>(null);
     const [locationList, setLocationList] = useState<LocationType[] | null>(null);
 
     // fetch coordinate on app start
     useEffect(() => {
         const fetchLocation = async () => {
             const location = await getCurrentLocation();
-            setCoordinate(location);
+            setLocation(location);
         }
 
         fetchLocation();
@@ -44,8 +38,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return (
         <AppContext.Provider
             value={{
-                coordinate,
-                setCoordinate,
+                location: location,
+                setLocation: setLocation,
                 locationList,
                 setLocationList,
             }}
