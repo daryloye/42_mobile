@@ -1,20 +1,18 @@
-import { useContext } from 'react';
 import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CoordinateContext } from '../../utils/coordinateProvider';
-
+import { useAppContext } from '../../utils/appContext';
 
 export default function CurrentScreen() {
-  const { coordinate: search } = useContext(CoordinateContext);
+  const { coordinate } = useAppContext();
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
-      {search === null ? (
+      {coordinate === null ? (
         <Text style={styles.error}>
           Geolocation is not available, please enable it in your App settings
         </Text>
       ) : (
-          <Text style={styles.text}>Currently{'\n'}{search.latitude} {search.longitude}</Text>
+          <Text style={styles.text}>Currently{'\n'}{coordinate.latitude} {coordinate.longitude}</Text>
       )}
     </SafeAreaView>
   );

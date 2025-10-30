@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CoordinateContext } from '../../utils/coordinateProvider';
+import { useAppContext } from '../../utils/appContext';
 
 
 export default function WeeklyScreen() {
-  const { coordinate: search } = useContext(CoordinateContext);
+  const { coordinate } = useAppContext();
   
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>

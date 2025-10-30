@@ -1,22 +1,25 @@
 import { Stack } from "expo-router";
+import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { Header } from '../components/Header';
-import { CoordinateProvider } from '../utils/coordinateProvider';
+import { AppProvider, useAppContext } from '../utils/appContext';
 
 export default function RootLayout() {
+    const { setLocationList } = useAppContext();
+    
     return (
-        <CoordinateProvider>
-            <Header />
-            <Stack
-                screenOptions={{
-                    headerShown: false
-                    // headerTitle: () => <Header />,
-                    // headerStyle: {
-                    //     backgroundColor: '#5b5d72',
-                    // },
-                }}
-            >
-                <Stack.Screen name="(tabs)" />
-            </Stack>
-        </CoordinateProvider>
+        <AppProvider>
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    Keyboard.dismiss();
+                    setLocationList(null);
+                }}>
+                <View style={{ flex: 1 }}>
+                    <Header />
+                    <Stack screenOptions={{ headerShown: false }} >
+                        <Stack.Screen name="(tabs)" />
+                    </Stack>
+                </View>
+            </TouchableWithoutFeedback>
+        </AppProvider>
     );
 }

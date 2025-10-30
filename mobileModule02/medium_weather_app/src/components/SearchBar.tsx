@@ -1,66 +1,71 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { fetchLocations, LocationType } from '../utils/api';
-import { CoordinateContext } from '../utils/coordinateProvider';
+import { fetchLocations } from '../utils/api';
+import { LocationType, useAppContext } from '../utils/appContext';
 
 export function SearchBar() {
-  const { coordinate, setCoordinate } = useContext(CoordinateContext);
-  const [query, setQuery] = useState<string>('');
-  const [locationList, setLocationList] = useState<LocationType[] | null>(null);
+  const { setCoordinate, locationList, setLocationList } = useAppContext();
+  const [inputText, setInputText] = useState<string>('');
 
   const handleChangeText = async (text: string) => {
-    setQuery(text);
-    
     const locationList = await fetchLocations(text) as LocationType[];
     setLocationList(locationList);
+    setInputText(text);
   }
 
-  const handleSubmit = () => {
-    console.log('setting coordinate');
-    setCoordinate(null); // you can decide what to store here
+  const handleSubmitEditing = () => {
+    console.log('Handle Submit');
+    if (locationList && locationList.length > 0) {
+      setCoordinate({
+        latitude: locationList[0].latitude,
+        longitude: locationList[0].longitude,
+      });
+      setInputText('');
+      setLocationList(null);
+    }
   };
 
-  const data = [
-    {title: 'aaa', desc: 'b'}, 
-    {title: 'aaab', desc: 'b'},
-    {title: 'aaac', desc: 'b'},
-    {title: 'aaad', desc: 'b'}, 
-    {title: 'aaae', desc: 'b'},
-    {title: 'aaaf', desc: 'b'},
-    {title: 'aaag', desc: 'b'}, 
-    {title: 'aaah', desc: 'b'},
-    {title: 'aaai', desc: 'b'},
-  ];
-
-  const filtered = query.length === 0 
-    ? [] 
-    : data.filter(item => item.title.toLowerCase().includes(query.toLowerCase()));
+  const handlePress = (item: LocationType) => {
+    console.log('Handle Press');
+    if (locationList && locationList.length > 0) {
+      setCoordinate({
+        latitude: item.latitude,
+        longitude: item.longitude,
+      });
+      setInputText('');
+      setLocationList(null);
+    }
+  }
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Search location..."
-        placeholderTextColor='white'
-        value={query}
-        onChangeText={(text) => handleChangeText(text)}
-        onSubmitEditing={handleSubmit}
-      />
-      {locationList && locationList.length > 0 && (
-        <View style={styles.listContainer}>
-          <FlatList
-            data={locationList}
-            keyExtractor={(item) => item.id.toString()}
-            keyboardShouldPersistTaps="always"
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => setQuery(item.name)}>
-                <Text style={styles.listItem}>{item.name} {item.admin1}, {item.country}</Text>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      )}
-    </View>
+      <View style={styles.container}>
+
+        {/* Text Box */}
+        <TextInput
+          style={styles.input}
+          placeholder="Search location..."
+          placeholderTextColor='white'
+          value={inputText}
+          onChangeText={(text) => handleChangeText(text)}
+          onSubmitEditing={handleSubmitEditing}
+        />
+
+        {/* Selection List */}
+        {locationList && locationList.length > 0 && (
+          <View style={styles.listContainer}>
+            <FlatList
+              data={locationList}
+              keyExtractor={(item) => item.id.toString()}
+              keyboardShouldPersistTaps="handled"
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => handlePress(item)}>
+                  <Text style={styles.listItem}>{item.name} {item.admin1}, {item.country}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        )}
+      </View>
   );
 }
 
