@@ -21,7 +21,7 @@ export function Header() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#5b5d72',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     height: 90,
     flexDirection: 'row',
     alignItems: 'center',

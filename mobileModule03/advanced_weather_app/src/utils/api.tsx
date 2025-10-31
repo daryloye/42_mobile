@@ -1,36 +1,39 @@
+import { Ionicons } from '@expo/vector-icons';
 import { fetchWeatherApi } from 'openmeteo';
+import { ReactNode } from 'react';
 import { LocationType } from './appContext';
 
-const weatherCode: Record<number, string> = {
-    0: "Clear",
-    1: "Mainly clear",
-    2: "Partly cloudy",
-    3: "Overcast",
-    45: "Fog",
-    48: "Rime fog",
-    51: "Light drizzle",
-    53: "Moderate drizzle",
-    55: "Heavy drizzle",
-    56: "Light freezing drizzle",
-    57: "Dense freezing drizzle",
-    61: "Light rain",
-    63: "Moderate rain",
-    65: "Heavy rain",
-    66: "Light freezing rain",
-    67: "Heavy freezing rain",
-    71: "Light snow",
-    73: "Moderate snow",
-    75: "Heavy snow",
-    77: "Snow grains",
-    80: "Light rain showers",
-    81: "Moderate rain showers",
-    82: "Violent rain showers",
-    85: "Light snow showers",
-    86: "Heavy snow showers",
-    95: "Thunderstorm",
-    96: "Thunderstorm + light hail",
-    99: "Thunderstorm + heavy hail",
+const weatherCode: Record<number, {label: string, icon: (size: number) => ReactNode}> = {
+    0: { label: "Clear", icon: (size) => <Ionicons name="sunny-outline" size={size} color='#90D5FF' /> },
+    1: { label: "Mainly clear", icon: (size) => <Ionicons name="sunny-outline" size={size} color='#90D5FF' /> },
+    2: { label: "Partly cloudy", icon: (size) => <Ionicons name="cloud-outline" size={size} color='#90D5FF' /> },
+    3: { label: "Overcast", icon: (size) => <Ionicons name="cloud-outline" size={size} color='#90D5FF' /> },
+    45: { label: "Fog", icon: (size) => <Ionicons name="cloud-outline" size={size} color='#90D5FF' /> },
+    48: { label: "Rime fog", icon: (size) => <Ionicons name="cloud-outline" size={size} color='#90D5FF' /> },
+    51: { label: "Light drizzle", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    53: { label: "Moderate drizzle", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    55: { label: "Heavy drizzle", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    56: { label: "Light freezing drizzle", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    57: { label: "Dense freezing drizzle", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    61: { label: "Light rain", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    63: { label: "Moderate rain", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    65: { label: "Heavy rain", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    66: { label: "Light freezing", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    67: { label: "Heavy freezing", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    71: { label: "Light snow", icon: (size) => <Ionicons name="snow-outline" size={size} color='#90D5FF' /> },
+    73: { label: "Moderate snow", icon: (size) => <Ionicons name="snow-outline" size={size} color='#90D5FF' /> },
+    75: { label: "Heavy snow", icon: (size) => <Ionicons name="snow-outline" size={size} color='#90D5FF' /> },
+    77: { label: "Snow grains", icon: (size) => <Ionicons name="snow-outline" size={size} color='#90D5FF' /> },
+    80: { label: "Light rain showers", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    81: { label: "Moderate rain showers", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    82: { label: "Violent rain showers", icon: (size) => <Ionicons name="rainy-outline" size={size} color='#90D5FF' /> },
+    85: { label: "Light snow showers", icon: (size) => <Ionicons name="snow-outline" size={size} color='#90D5FF' /> },
+    86: { label: "Heavy snow showers", icon: (size) => <Ionicons name="snow-outline" size={size} color='#90D5FF' /> },
+    95: { label: "Thunderstorm", icon: (size) => <Ionicons name="thunderstorm-outline" size={size} color='#90D5FF' /> },
+    96: { label: "Thunderstorm + light hail", icon: (size) => <Ionicons name="thunderstorm-outline" size={size} color='#90D5FF' /> },
+    99: { label: "Thunderstorm + heavy hail", icon: (size) => <Ionicons name="thunderstorm-outline" size={size} color='#90D5FF' /> },
 };
+
 
 export async function fetchApiLocations(query: string): Promise<LocationType[] | null> {
     try {
@@ -38,6 +41,7 @@ export async function fetchApiLocations(query: string): Promise<LocationType[] |
         const response_json = await response.json();
         if (response_json.results) {
             return response_json.results.map((item: any): LocationType => ({
+                id: item.id,
                 city: item.name,
                 region: item.admin1,
                 country: item.country,
@@ -55,7 +59,7 @@ export async function fetchApiLocations(query: string): Promise<LocationType[] |
 // Current
 export type CurrentWeatherType = {
     temperature: number,
-    weather: string,
+    weather: {label: string, icon: (size: number) => ReactNode},
     wind_speed: number,
 }
 
@@ -88,7 +92,7 @@ export async function fetchCurrentWeather(location: LocationType): Promise<Curre
 export type TodayWeatherType = {
     time: string,
     temperature: number,
-    weather: string,
+    weather: {label: string, icon: (size: number) => ReactNode},
     wind_speed: number,
 }
 
@@ -137,7 +141,7 @@ export type WeeklyWeatherType = {
     date: string,
     min_temperature: number,
     max_temperature: number,
-    weather: string,
+    weather: {label: string, icon: (size: number) => ReactNode},
 }
 
 function createDate(dayOffset: number): string {

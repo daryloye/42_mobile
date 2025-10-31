@@ -15,6 +15,7 @@ export async function getCurrentLocation(): Promise<LocationType | null> {
     });
 
     return {
+        id: 0,
         city: reverseGeocode.city ?? '',
         region: reverseGeocode.district ?? '',
         country: reverseGeocode.country ?? '',

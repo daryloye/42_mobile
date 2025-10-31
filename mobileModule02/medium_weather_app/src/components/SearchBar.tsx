@@ -63,7 +63,7 @@ export function SearchBar() {
           <View style={styles.listContainer}>
             <FlatList
               data={locationList}
-              // keyExtractor={(item) => item.id.toString()}
+              keyExtractor={(item) => item.id.toString()}
               keyboardShouldPersistTaps="handled"
               renderItem={({ item }) => (
                 <TouchableOpacity onPress={() => handlePress(item)}>

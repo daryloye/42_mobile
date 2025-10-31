@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { fetchApiLocations } from '../utils/api';
@@ -11,7 +12,7 @@ export function SearchBar() {
     setInputText(text);
     try {
       const locationList = await fetchApiLocations(text) as LocationType[];
-      setLocationList(locationList);
+      setLocationList(locationList?.slice(0, 5));
       setErrorMsg(null);
 
     } catch (error: any) {
@@ -58,22 +59,25 @@ export function SearchBar() {
           onSubmitEditing={handleSubmitEditing}
         />
 
-        {/* Selection List */}
-        {locationList && locationList.length > 0 && (
-          <View style={styles.listContainer}>
-            <FlatList
-              data={locationList}
-              // keyExtractor={(item) => item.id.toString()}
-              keyboardShouldPersistTaps="handled"
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => handlePress(item)}>
-                  <Text style={styles.listItem}>{item.city} {item.region}, {item.country}</Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        )}
-      </View>
+      {/* Selection List */}
+      {locationList && locationList.length > 0 && (
+        <View style={styles.listContainer}>
+          <FlatList
+            data={locationList}
+            keyExtractor={(item) => item.id.toString()}
+            keyboardShouldPersistTaps="handled"
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => handlePress(item)}>
+                <View style={styles.listItem}>
+                  <Ionicons name="business-outline" size={20} color='white' />
+                  <Text style={styles.listText}>{item.city} {item.region}, {item.country}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      )}
+    </View>
   );
 }
 
@@ -92,12 +96,18 @@ const styles = StyleSheet.create({
     top: 45,
     left: 0,
     right: 0,
-    backgroundColor: 'white',
+    backgroundColor: 'rgb(0,0,0,0.5)',
     borderWidth: 1,
     borderColor: 'grey',
     zIndex: 9999,
   },
   listItem: {
+    flexDirection: 'row',
+    marginLeft: 5,
+    alignItems: 'center',
+  },
+  listText: {
+    color: 'white',
     padding: 10,
   },
 });

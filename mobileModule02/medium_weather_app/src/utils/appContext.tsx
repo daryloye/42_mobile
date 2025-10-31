@@ -2,6 +2,7 @@ import React, { createContext, ReactNode, useContext, useEffect, useState } from
 import { getCurrentLocation } from './geolocation';
 
 export type LocationType = {
+    id: number,
     city: string,
     region: string,
     country: string,

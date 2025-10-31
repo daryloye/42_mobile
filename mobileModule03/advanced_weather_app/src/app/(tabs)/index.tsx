@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import { ErrorMsg } from '../../components/ErrorMsg';
+import { LocationText } from '../../components/LocationText';
+import { WindspeedText } from '../../components/WindspeedText';
 import { CurrentWeatherType, fetchCurrentWeather } from '../../utils/api';
 import { useAppContext } from '../../utils/appContext';
 
@@ -30,20 +31,30 @@ export default function CurrentScreen() {
         setLocationList(null);
       }}
     >
-      <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
+      <View style={styles.container}>
         {errorMsg ? (
           <ErrorMsg />
         ) : (
-          <Text style={styles.text}>
-            {location?.city}{'\n'}
-            {location?.region}{'\n'}
-            {location?.country}{'\n'}
-            {data?.temperature.toFixed(1)}°C{'\n'}
-            {data?.weather}{'\n'}
-            {data?.wind_speed.toFixed(1)}km/h
-          </Text>
+           <View style={styles.container}>
+            {/* Location */}
+            {location && <LocationText location={location} />}
+
+            {/* Temperature */}
+            {data && <Text style={styles.temperature}>{data.temperature.toFixed(1)}°C</Text>}
+
+            {/* Weather + Wind Speed */}
+            {data &&
+              <View style={{alignItems: 'center'}}>
+                <Text style={styles.weather}>{data.weather.label}</Text>
+                {data.weather.icon(100)}
+              </View>
+            }
+            {data && <WindspeedText data={data.wind_speed} />}
+
+            <View style={{paddingBottom: 30}}/>
+          </View>
         )}
-      </SafeAreaView>
+      </View>
     </TouchableWithoutFeedback>
   );
 }
@@ -51,13 +62,17 @@ export default function CurrentScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
   },
-  text: {
-    color: "black",
+  weather: {
+    color: "white",
     fontSize: 24,
+    textAlign: 'center',
+  },
+  temperature: {
+    color: "orange",
+    fontSize: 40,
     textAlign: 'center',
   }
 });

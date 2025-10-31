@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { WeeklyWeatherType, fetchWeeklyWeather } from '../../utils/api';
 import { useAppContext } from '../../utils/appContext';
@@ -31,7 +30,7 @@ export default function WeeklyScreen() {
       }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
+        <View style={styles.container}>
           {errorMsg ? (
             <ErrorMsg />
           ) : (
@@ -45,12 +44,12 @@ export default function WeeklyScreen() {
               {/* Weather data table */}
               {data?.map((item, i) => (
                 <Text key={i} style={styles.table}>
-                  {item.date} {item.min_temperature.toFixed(1)}°C {item.max_temperature.toFixed(1)}°C  {item.weather}
+                  {item.date} {item.min_temperature.toFixed(1)}°C {item.max_temperature.toFixed(1)}°C  {item.weather.label}
                 </Text>
               ))}
             </View>
           )}
-        </SafeAreaView>
+        </View>
       </ScrollView>
     </TouchableWithoutFeedback>
   );
@@ -59,7 +58,7 @@ export default function WeeklyScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
   },

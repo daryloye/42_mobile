@@ -38,6 +38,7 @@ export async function fetchApiLocations(query: string): Promise<LocationType[] |
         const response_json = await response.json();
         if (response_json.results) {
             return response_json.results.map((item: any): LocationType => ({
+                id: item.id,
                 city: item.name,
                 region: item.admin1,
                 country: item.country,
