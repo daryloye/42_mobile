@@ -4,12 +4,17 @@ import { useAppContext } from '../utils/appContext';
 import { getCurrentLocation } from '../utils/geolocation';
 
 export function GeolocationButton() {
-    const { setLocation } = useAppContext();
-    
+    const { setLocation, setErrorMsg } = useAppContext();
+
     const handlePress = async () => {
         console.log('Pressed Geolocation Button');
-        const location = await getCurrentLocation();
-        setLocation(location);
+        try {
+            const location = await getCurrentLocation();
+            setLocation(location);
+            setErrorMsg(null);
+        } catch (error: any) {
+            setErrorMsg(error?.message);
+        }
     }
 
     return (

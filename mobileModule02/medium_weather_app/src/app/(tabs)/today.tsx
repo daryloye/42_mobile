@@ -1,22 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ErrorMsg } from '../../components/ErrorMsg';
 import { TodayWeatherType, fetchTodayWeather } from '../../utils/api';
 import { useAppContext } from '../../utils/appContext';
 
 export default function TodayScreen() {
-  const { location, setLocationList } = useAppContext();
+  const { location, setLocationList, errorMsg, setErrorMsg } = useAppContext();
   const [data, setData] = useState<TodayWeatherType[] | null>(null);
 
   useEffect(() => {
-    const updatePage = async () => {
-      if (location) {
-        const weatherData = await fetchTodayWeather(location);
-        setData(weatherData);
+    (async () => {
+      try {
+        if (location) {
+          const weatherData = await fetchTodayWeather(location);
+          setData(weatherData);
+          setErrorMsg(null);
+        }
+      } catch (error: any) {
+        setErrorMsg(error?.message);
       }
-    }
-
-    updatePage();
+    })();
   }, [location])
 
   return (
@@ -26,23 +30,22 @@ export default function TodayScreen() {
         setLocationList(null);
       }}
     >
-      <ScrollView contentContainerStyle={{flexGrow: 1}}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
-          {location === null ? (
-            <Text style={styles.error}>
-              Geolocation is not available, please enable it in your App settings
-            </Text>
+          {errorMsg ? (
+            <ErrorMsg />
           ) : (
             <View>
               <Text style={styles.text}>
-                {location.city}{'\n'}
-                {location.region}{'\n'}
-                {location.country}{'\n'}
+                {location?.city}{'\n'}
+                {location?.region}{'\n'}
+                {location?.country}{'\n'}
               </Text>
 
-              {data && data.map((item, i) => (
+              {/* Weather data table */}
+              {data?.map((item, i) => (
                 <Text key={i} style={styles.table}>
-                  {item.time} {item.temperature.toFixed(1)} °C {item.weather}{'\n'} {item.wind_speed.toFixed(1)} km/h
+                  {item.time} {item.temperature.toFixed(1)}°C {item.wind_speed.toFixed(1)}km/h  {item.weather}
                 </Text>
               ))}
             </View>
@@ -67,13 +70,7 @@ const styles = StyleSheet.create({
   },
   table: {
     color: "black",
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  error: {
-    color: 'red',
     fontSize: 16,
-    padding: 20,
     textAlign: 'center',
   }
 });

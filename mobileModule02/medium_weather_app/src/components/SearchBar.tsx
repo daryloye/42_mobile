@@ -1,17 +1,22 @@
 import { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { fetchLocations } from '../utils/api';
+import { fetchApiLocations } from '../utils/api';
 import { LocationType, useAppContext } from '../utils/appContext';
 
 export function SearchBar() {
-  const { setLocation, locationList, setLocationList } = useAppContext();
+  const { setLocation, locationList, setLocationList, setErrorMsg } = useAppContext();
   const [inputText, setInputText] = useState<string>('');
 
   const handleChangeText = async (text: string) => {
     setInputText(text);
-    
-    const locationList = await fetchLocations(text) as LocationType[];
-    setLocationList(locationList);
+    try {
+      const locationList = await fetchApiLocations(text) as LocationType[];
+      setLocationList(locationList);
+      setErrorMsg(null);
+
+    } catch (error: any) {
+      setErrorMsg(error?.message)
+    }
   }
 
   const handleSubmitEditing = () => {
@@ -20,6 +25,10 @@ export function SearchBar() {
       setLocation(locationList[0]);
       setInputText('');
       setLocationList(null);
+      setErrorMsg(null);
+
+    } else {
+      setErrorMsg('Could not find any results for the supplied address or coordinates');
     }
   };
 
@@ -29,6 +38,10 @@ export function SearchBar() {
       setLocation(location);
       setInputText('');
       setLocationList(null);
+      setErrorMsg(null);
+
+    } else {
+      setErrorMsg('Could not find any results for the supplied address or coordinates');
     }
   }
 

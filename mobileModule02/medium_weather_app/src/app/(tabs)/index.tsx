@@ -1,22 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ErrorMsg } from '../../components/ErrorMsg';
 import { CurrentWeatherType, fetchCurrentWeather } from '../../utils/api';
 import { useAppContext } from '../../utils/appContext';
 
 export default function CurrentScreen() {
-  const { location, setLocationList } = useAppContext();
+  const { location, setLocationList, errorMsg, setErrorMsg } = useAppContext();
   const [data, setData] = useState<CurrentWeatherType | null>(null);
 
   useEffect(() => {
-    const updatePage = async () => {
-      if (location) {
-        const weatherData = await fetchCurrentWeather(location);
-        setData(weatherData);
+    (async () => {
+      try {
+        if (location) {
+          const weatherData = await fetchCurrentWeather(location);
+          setData(weatherData);
+          setErrorMsg(null);
+        }
+      } catch (error: any) {
+        setErrorMsg(error?.message);
       }
-    }
-
-    updatePage();
+    })();
   }, [location])
 
   return (
@@ -27,18 +31,16 @@ export default function CurrentScreen() {
       }}
     >
       <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
-        {location === null ? (
-          <Text style={styles.error}>
-            Geolocation is not available, please enable it in your App settings
-          </Text>
+        {errorMsg ? (
+          <ErrorMsg />
         ) : (
           <Text style={styles.text}>
-            {location.city}{'\n'}
-            {location.region}{'\n'}
-            {location.country}{'\n'}
-            {data?.temperature.toFixed(1)} °C{'\n'}
+            {location?.city}{'\n'}
+            {location?.region}{'\n'}
+            {location?.country}{'\n'}
+            {data?.temperature.toFixed(1)}°C{'\n'}
             {data?.weather}{'\n'}
-            {data?.wind_speed.toFixed(1)} km/h
+            {data?.wind_speed.toFixed(1)}km/h
           </Text>
         )}
       </SafeAreaView>
@@ -56,12 +58,6 @@ const styles = StyleSheet.create({
   text: {
     color: "black",
     fontSize: 24,
-    textAlign: 'center',
-  },
-  error: {
-    color: 'red',
-    fontSize: 16,
-    padding: 20,
     textAlign: 'center',
   }
 });
