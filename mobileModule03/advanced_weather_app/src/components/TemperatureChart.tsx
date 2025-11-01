@@ -1,21 +1,24 @@
-import { LineChart, lineDataItem } from 'react-native-gifted-charts';
+import { Dimensions, View } from 'react-native';
+import { LineChart } from 'react-native-gifted-charts';
+import { TodayWeatherType } from '../utils/api';
 
-interface ValueWrapper<T> {
-    value: T;
-}
-
-export function TemperatureChart({data} : {data: number[]}) {
-    const newArray: ValueWrapper<number>[] = data.map((item: number) => {
-        return { value: item };
-    });
-    console.log(newArray)
+export function TemperatureChart({ data }: { data: TodayWeatherType[] }) {
+    const values = data.map((item) => ({ value: item.temperature }));
+    const labels = data.map((item, i) => (i % 3 === 0 ? item.time : ''));
+    const screenWidth = Dimensions.get('window').width;
 
     return (
-        <LineChart
-            data={newArray as lineDataItem[]}
-            spacing={10}
-            noOfSections={4}
-            xAxisLabelTexts={['0', '1', '2', '3']}
-        />
+        <View style={{ width: screenWidth - 40, alignSelf: 'center', borderColor: 'red', borderWidth: 1 }}>
+            <LineChart
+                data={values}
+                xAxisLabelTexts={labels}
+                noOfSections={4}
+                yAxisLabelSuffix='°C'
+                xAxisLabelTextStyle={{ fontSize: 10 }}
+                xAxisTextNumberOfLines={2}
+                adjustToWidth
+                endSpacing={20}
+            />
+        </View>
     )
 }

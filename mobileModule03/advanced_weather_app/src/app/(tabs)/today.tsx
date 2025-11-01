@@ -41,14 +41,14 @@ export default function TodayScreen() {
               {location && <LocationText location={location} />}
 
               {/* Weather data table */}
-              {data && <TemperatureChart data={data.map((item) => item.temperature)}/>}
+              {data && <TemperatureChart data={data}/>}
 
               {/* Weather + Wind Speed */}
               {data &&
                 <ScrollView
                   horizontal
                   nestedScrollEnabled
-                  contentContainerStyle={{ paddingHorizontal: 12, alignItems: 'center' }}
+                  contentContainerStyle={{ paddingHorizontal: 10, alignItems: 'center' }}
                   style={{ alignSelf: 'stretch', borderColor: 'red', borderWidth: 1 }}>
                   {data.map((item, i) => (
                     <View key={i} style={{ borderColor: 'blue', borderWidth: 1 }} onStartShouldSetResponder={() => true}>

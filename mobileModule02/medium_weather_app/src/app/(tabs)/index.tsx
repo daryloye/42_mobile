@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { CurrentWeatherType, fetchCurrentWeather } from '../../utils/api';
 import { useAppContext } from '../../utils/appContext';
@@ -30,7 +29,7 @@ export default function CurrentScreen() {
         setLocationList(null);
       }}
     >
-      <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
+      <View style={styles.container}>
         {errorMsg ? (
           <ErrorMsg />
         ) : (
@@ -38,12 +37,12 @@ export default function CurrentScreen() {
             {location?.city}{'\n'}
             {location?.region}{'\n'}
             {location?.country}{'\n'}
-            {data?.temperature.toFixed(1)}°C{'\n'}
-            {data?.weather}{'\n'}
-            {data?.wind_speed.toFixed(1)}km/h
+            {data && data.temperature.toFixed(1)}°C{'\n'}
+            {data && data.weather}{'\n'}
+            {data && data.wind_speed.toFixed(1)}km/h
           </Text>
         )}
-      </SafeAreaView>
+      </View>
     </TouchableWithoutFeedback>
   );
 }

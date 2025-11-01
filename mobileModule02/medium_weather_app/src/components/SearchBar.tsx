@@ -80,11 +80,9 @@ export function SearchBar() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    elevation: 10,
     marginLeft: 10,
   },
   input: {
-    height: 40,
     color: 'white',
   },
   listContainer: {

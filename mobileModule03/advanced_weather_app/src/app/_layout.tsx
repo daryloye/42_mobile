@@ -14,6 +14,7 @@ function AppLayout() {
                 style={{ flex: 1 }}
                 resizeMode='cover'
             >
+                <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent'}} edges={['left', 'right']}>
                 <Header />
                 <Stack screenOptions={{
                     headerShown: false,
@@ -21,6 +22,7 @@ function AppLayout() {
                 }} >
                     <Stack.Screen name="(tabs)" />
                 </Stack>
+                </SafeAreaView>
             <SafeAreaView style={{ backgroundColor: 'rgba(0,0,0,0.8)' }} edges={['bottom']} />
             </ImageBackground>
         </View>

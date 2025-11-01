@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { LocationText } from '../../components/LocationText';
 import { WindspeedText } from '../../components/WindspeedText';
@@ -31,7 +31,7 @@ export default function CurrentScreen() {
         setLocationList(null);
       }}
     >
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         {errorMsg ? (
           <ErrorMsg />
         ) : (
@@ -54,7 +54,7 @@ export default function CurrentScreen() {
             <View style={{ paddingBottom: 30 }} />
           </View>
         )}
-      </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 }
