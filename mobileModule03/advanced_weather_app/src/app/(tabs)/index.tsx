@@ -36,6 +36,7 @@ export default function CurrentScreen() {
           <ErrorMsg />
         ) : (
           <View style={styles.container}>
+            
             {/* Location */}
             {location && <LocationText location={location} />}
 
@@ -50,6 +51,7 @@ export default function CurrentScreen() {
               </View>
             }
             {data && <WindspeedText data={data.wind_speed} />}
+
           </View>
         )}
       </ScrollView>

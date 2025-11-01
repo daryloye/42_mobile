@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { FlatList, Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { TodayTemperatureChart } from '../../components/Chart';
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { LocationText } from '../../components/LocationText';
-import { TemperatureChart } from '../../components/TemperatureChart';
-import { WindspeedText } from '../../components/WindspeedText';
+import { TodayWeatherScrollList } from '../../components/WeatherScrollList';
 import { TodayWeatherType, fetchTodayWeather } from '../../utils/api';
 import { useAppContext } from '../../utils/appContext';
 
@@ -42,31 +42,11 @@ export default function TodayScreen() {
             {location && <LocationText location={location} />}
 
             {/* Weather data table */}
-            {data &&
-              <View style={{ alignSelf: 'stretch', backgroundColor: 'rgba(105, 85, 35, 0.5)' }}>
-                <TemperatureChart data={data} />
-              </View>}
+            {data && <TodayTemperatureChart data={data} />}
 
             {/* Weather + Wind Speed */}
-            {data &&
-              <View style={{ alignSelf: 'stretch' }}>
-                <FlatList
-                  data={data}
-                  horizontal
-                  keyExtractor={(_, i) => i.toString()}
-                  renderItem={({ item }) => (
+            {data && <TodayWeatherScrollList data={data} />}
 
-                    <View style={styles.weatherContainer}>
-                      <Text style={styles.time}>{item.time}</Text>
-                      {item.weather.icon(30)}
-                      <Text style={styles.temperature}>{item.temperature.toFixed(1)}°C</Text>
-                      <WindspeedText data={item.wind_speed} />
-                    </View>
-
-                  )}
-                />
-              </View>
-            }
           </View>
         )}
       </ScrollView>
@@ -80,23 +60,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     paddingBottom: 50,
-    gap: 20,
   },
-  weatherContainer: {
-    backgroundColor: 'rgba(105, 85, 35, 0.5)',
-    alignItems: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    gap: 15,
-  },
-  time: {
-    color: 'white',
-    fontSize: 24,
-    textAlign: 'center',
-  },
-  temperature: {
-    color: 'orange',
-    fontSize: 24,
-    textAlign: 'center',
-  }
 });

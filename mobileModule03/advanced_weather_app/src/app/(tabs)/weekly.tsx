@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { WeeklyTemperatureChart } from '../../components/Chart';
 import { ErrorMsg } from '../../components/ErrorMsg';
+import { LocationText } from '../../components/LocationText';
+import { WeeklyWeatherScrollList } from '../../components/WeatherScrollList';
 import { WeeklyWeatherType, fetchWeeklyWeather } from '../../utils/api';
 import { useAppContext } from '../../utils/appContext';
 
@@ -30,36 +33,34 @@ export default function WeeklyScreen() {
       }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={styles.container}>
-          {errorMsg ? (
-            <ErrorMsg />
-          ) : (
-            <View>
-              <Text style={styles.text}>
-                {location?.city}{'\n'}
-                {location?.region}{'\n'}
-                {location?.country}{'\n'}
-              </Text>
+        {errorMsg ? (
+          <ErrorMsg />
+        ) : (
+          <View style={styles.container}>
 
-              {/* Weather data table */}
-              {data?.map((item, i) => (
-                <Text key={i} style={styles.table}>
-                  {item.date} {item.min_temperature.toFixed(1)}°C {item.max_temperature.toFixed(1)}°C  {item.weather.label}
-                </Text>
-              ))}
-            </View>
-          )}
-        </View>
+            {/* Location */}
+            {location && <LocationText location={location} />}
+
+            {/* Weather data table */}
+            {data && <WeeklyTemperatureChart data={data} />}
+
+
+            {/* Weather + Wind Speed */}
+            {data && <WeeklyWeatherScrollList data={data} />}
+
+          </View>
+        )}
       </ScrollView>
-    </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback >
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
+    paddingBottom: 50,
   },
   text: {
     color: "black",
