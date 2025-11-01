@@ -15,11 +15,7 @@ export default function TabLayout() {
                 tabBarStyle: { backgroundColor: 'transparent' },
                 tabBarActiveTintColor: 'orange',
                 tabBarInactiveTintColor: 'white',
-                tabBarIndicatorStyle: {
-                    backgroundColor: 'orange',
-                    height: 2,
-                    borderRadius: 2,
-                },
+                tabBarIndicatorStyle: { backgroundColor: 'orange' },
             }}
         >
             <MenuTab.Screen

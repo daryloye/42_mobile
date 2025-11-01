@@ -35,7 +35,7 @@ export default function CurrentScreen() {
         {errorMsg ? (
           <ErrorMsg />
         ) : (
-           <View style={styles.container}>
+          <View style={styles.container}>
             {/* Location */}
             {location && <LocationText location={location} />}
 
@@ -44,14 +44,14 @@ export default function CurrentScreen() {
 
             {/* Weather + Wind Speed */}
             {data &&
-              <View style={{alignItems: 'center'}}>
+              <View style={{ alignItems: 'center' }}>
                 <Text style={styles.weather}>{data.weather.label}</Text>
                 {data.weather.icon(100)}
               </View>
             }
             {data && <WindspeedText data={data.wind_speed} />}
 
-            <View style={{paddingBottom: 30}}/>
+            <View style={{ paddingBottom: 30 }} />
           </View>
         )}
       </View>

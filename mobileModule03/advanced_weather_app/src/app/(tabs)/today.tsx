@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import { ErrorMsg } from '../../components/ErrorMsg';
+import { LocationText } from '../../components/LocationText';
+import { TemperatureChart } from '../../components/TemperatureChart';
+import { WindspeedText } from '../../components/WindspeedText';
 import { TodayWeatherType, fetchTodayWeather } from '../../utils/api';
 import { useAppContext } from '../../utils/appContext';
 
@@ -23,35 +26,44 @@ export default function TodayScreen() {
   }, [location])
 
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-        setLocationList(null);
-      }}
-    >
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+          setLocationList(null);
+        }}
+      >
         <View style={styles.container}>
           {errorMsg ? (
             <ErrorMsg />
           ) : (
-            <View>
-              <Text style={styles.text}>
-                {location?.city}{'\n'}
-                {location?.region}{'\n'}
-                {location?.country}{'\n'}
-              </Text>
+            <View style={styles.container}>
+              {/* Location */}
+              {location && <LocationText location={location} />}
 
               {/* Weather data table */}
-              {data?.map((item, i) => (
-                <Text key={i} style={styles.table}>
-                  {item.time} {item.temperature.toFixed(1)}°C {item.wind_speed.toFixed(1)}km/h  {item.weather.label}
-                </Text>
-              ))}
+              {data && <TemperatureChart data={data.map((item) => item.temperature)}/>}
+
+              {/* Weather + Wind Speed */}
+              {data &&
+                <ScrollView
+                  horizontal
+                  nestedScrollEnabled
+                  contentContainerStyle={{ paddingHorizontal: 12, alignItems: 'center' }}
+                  style={{ alignSelf: 'stretch', borderColor: 'red', borderWidth: 1 }}>
+                  {data.map((item, i) => (
+                    <View key={i} style={{ borderColor: 'blue', borderWidth: 1 }} onStartShouldSetResponder={() => true}>
+                      <Text>{item.time}</Text>
+                      {item.weather.icon(30)}
+                      <Text>{item.temperature}</Text>
+                      <WindspeedText data={item.wind_speed} />
+                    </View>
+                  ))}
+                </ScrollView>
+              }
             </View>
           )}
         </View>
-      </ScrollView>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
   );
 }
 

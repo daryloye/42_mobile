@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '../components/Header';
 import { AppProvider } from '../utils/appContext';
 
+
 function AppLayout() {
     return (
         <View style={{ flex: 1 }}>
