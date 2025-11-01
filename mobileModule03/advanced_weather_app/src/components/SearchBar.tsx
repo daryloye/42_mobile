@@ -47,17 +47,17 @@ export function SearchBar() {
   }
 
   return (
-      <View style={styles.container}>
+    <View style={styles.container}>
 
-        {/* Text Box */}
-        <TextInput
-          style={styles.input}
-          placeholder="Search location..."
-          placeholderTextColor='white'
-          value={inputText}
-          onChangeText={(text) => handleChangeText(text)}
-          onSubmitEditing={handleSubmitEditing}
-        />
+      {/* Text Box */}
+      <TextInput
+        style={styles.input}
+        placeholder="Search location..."
+        placeholderTextColor='white'
+        value={inputText}
+        onChangeText={(text) => handleChangeText(text)}
+        onSubmitEditing={handleSubmitEditing}
+      />
 
       {/* Selection List */}
       {locationList && locationList.length > 0 && (
@@ -84,11 +84,9 @@ export function SearchBar() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    elevation: 10,
     marginLeft: 10,
   },
   input: {
-    height: 40,
     color: 'white',
   },
   listContainer: {
@@ -96,7 +94,7 @@ const styles = StyleSheet.create({
     top: 45,
     left: 0,
     right: 0,
-    backgroundColor: 'rgb(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     borderWidth: 1,
     borderColor: 'grey',
     zIndex: 9999,

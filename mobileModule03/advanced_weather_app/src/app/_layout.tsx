@@ -1,38 +1,49 @@
 import { Stack } from "expo-router";
-import { ImageBackground, StatusBar, View } from "react-native";
+import { ImageBackground, StatusBar, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '../components/Header';
 import { AppProvider } from '../utils/appContext';
 
-
-function AppLayout() {
+export default function RootLayout() {
     return (
-        <View style={{ flex: 1 }}>
-            <StatusBar barStyle='light-content' />
+        <AppProvider>
             <ImageBackground
                 source={require('../../assets/background.jpg')}
                 style={{ flex: 1 }}
                 resizeMode='cover'
             >
-                <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent'}} edges={['left', 'right']}>
-                <Header />
-                <Stack screenOptions={{
-                    headerShown: false,
-                    contentStyle: { backgroundColor: 'rgba(0,0,0,0.5)' }
-                }} >
-                    <Stack.Screen name="(tabs)" />
-                </Stack>
-                </SafeAreaView>
-            <SafeAreaView style={{ backgroundColor: 'rgba(0,0,0,0.8)' }} edges={['bottom']} />
-            </ImageBackground>
-        </View>
-    )
-}
+                <SafeAreaView style={styles.sides} edges={['right', 'left']}>
+                    <SafeAreaView style={styles.top} edges={['top']} />
 
-export default function RootLayout() {
-    return (
-        <AppProvider>
-            <AppLayout />
+                    <StatusBar barStyle='light-content' />
+
+                    <Header />
+
+                    <Stack screenOptions={{
+                        headerShown: false,
+                        contentStyle: { backgroundColor: 'transparent' }
+                    }}
+                    >
+                        <Stack.Screen name="(tabs)" />
+                    </Stack>
+
+                    <SafeAreaView style={styles.bottom} edges={['bottom']} />
+                </SafeAreaView>
+            </ImageBackground>
         </AppProvider>
     );
 }
+
+const styles = StyleSheet.create({
+    sides: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        zIndex: 10,
+    },
+    top: {
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    bottom: {
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+});

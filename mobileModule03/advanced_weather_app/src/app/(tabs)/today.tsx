@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import { FlatList, Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { LocationText } from '../../components/LocationText';
 import { TemperatureChart } from '../../components/TemperatureChart';
@@ -26,62 +26,77 @@ export default function TodayScreen() {
   }, [location])
 
   return (
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-          setLocationList(null);
-        }}
-      >
-        <View style={styles.container}>
-          {errorMsg ? (
-            <ErrorMsg />
-          ) : (
-            <View style={styles.container}>
-              {/* Location */}
-              {location && <LocationText location={location} />}
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+        setLocationList(null);
+      }}
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        {errorMsg ? (
+          <ErrorMsg />
+        ) : (
+          <View style={styles.container}>
 
-              {/* Weather data table */}
-              {data && <TemperatureChart data={data}/>}
+            {/* Location */}
+            {location && <LocationText location={location} />}
 
-              {/* Weather + Wind Speed */}
-              {data &&
-                <ScrollView
+            {/* Weather data table */}
+            {data &&
+              <View style={{ alignSelf: 'stretch', backgroundColor: 'rgba(105, 85, 35, 0.5)' }}>
+                <TemperatureChart data={data} />
+              </View>}
+
+            {/* Weather + Wind Speed */}
+            {data &&
+              <View style={{ alignSelf: 'stretch' }}>
+                <FlatList
+                  data={data}
                   horizontal
-                  nestedScrollEnabled
-                  contentContainerStyle={{ paddingHorizontal: 10, alignItems: 'center' }}
-                  style={{ alignSelf: 'stretch', borderColor: 'red', borderWidth: 1 }}>
-                  {data.map((item, i) => (
-                    <View key={i} style={{ borderColor: 'blue', borderWidth: 1 }} onStartShouldSetResponder={() => true}>
-                      <Text>{item.time}</Text>
+                  keyExtractor={(_, i) => i.toString()}
+                  renderItem={({ item }) => (
+
+                    <View style={styles.weatherContainer}>
+                      <Text style={styles.time}>{item.time}</Text>
                       {item.weather.icon(30)}
-                      <Text>{item.temperature}</Text>
+                      <Text style={styles.temperature}>{item.temperature.toFixed(1)}°C</Text>
                       <WindspeedText data={item.wind_speed} />
                     </View>
-                  ))}
-                </ScrollView>
-              }
-            </View>
-          )}
-        </View>
-      </TouchableWithoutFeedback>
+
+                  )}
+                />
+              </View>
+            }
+          </View>
+        )}
+      </ScrollView>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
+    paddingBottom: 50,
+    gap: 20,
   },
-  text: {
-    color: "black",
+  weatherContainer: {
+    backgroundColor: 'rgba(105, 85, 35, 0.5)',
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    gap: 15,
+  },
+  time: {
+    color: 'white',
     fontSize: 24,
     textAlign: 'center',
   },
-  table: {
-    color: "black",
-    fontSize: 16,
+  temperature: {
+    color: 'orange',
+    fontSize: 24,
     textAlign: 'center',
   }
 });

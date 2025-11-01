@@ -31,7 +31,7 @@ export default function CurrentScreen() {
         setLocationList(null);
       }}
     >
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         {errorMsg ? (
           <ErrorMsg />
         ) : (
@@ -50,8 +50,6 @@ export default function CurrentScreen() {
               </View>
             }
             {data && <WindspeedText data={data.wind_speed} />}
-
-            <View style={{ paddingBottom: 30 }} />
           </View>
         )}
       </ScrollView>
@@ -61,9 +59,10 @@ export default function CurrentScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'space-evenly',
     alignItems: 'center',
+    paddingBottom: 50,
   },
   weather: {
     color: "white",

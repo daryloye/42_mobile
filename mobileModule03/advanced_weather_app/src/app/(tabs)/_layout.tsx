@@ -22,21 +22,21 @@ export default function TabLayout() {
                 name='index'
                 options={{
                     title: "Currently",
-                    tabBarIcon: ({color}: {color: string}) => <Ionicons name="time-outline" size={16} color={color} />,
+                    tabBarIcon: ({ color }: { color: string }) => <Ionicons name="time-outline" size={16} color={color} />,
                 }}
             />
             <MenuTab.Screen
                 name='today'
                 options={{
                     title: "Today",
-                    tabBarIcon: ({color}: {color: string}) => <Ionicons name="today-outline" size={16} color={color}/>,
+                    tabBarIcon: ({ color }: { color: string }) => <Ionicons name="today-outline" size={16} color={color} />,
                 }}
             />
             <MenuTab.Screen
                 name='weekly'
                 options={{
                     title: "Weekly",
-                    tabBarIcon: ({color}: {color: string}) => <Ionicons name="calendar-outline" size={16} color={color}/>,
+                    tabBarIcon: ({ color }: { color: string }) => <Ionicons name="calendar-outline" size={16} color={color} />,
                 }}
             />
         </MenuTab>
