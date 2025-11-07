@@ -1,16 +1,16 @@
 import { CedarvilleCursive_400Regular, useFonts } from '@expo-google-fonts/cedarville-cursive';
-import { router } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useLogin } from '../utils/login';
 
-SplashScreen.preventAutoHideAsync();    // to load the font
+SplashScreen.preventAutoHideAsync();
 
 export default function MainScreen() {
-  const [loaded, error] = useFonts({
-    CedarvilleCursive_400Regular,
-  });
+  const [loaded, error] = useFonts({ CedarvilleCursive_400Regular });
+  const { promptAsync, request } = useLogin();
 
+  // Load font
   useEffect(() => {
     if (loaded || error) {
       SplashScreen.hideAsync();
@@ -21,24 +21,18 @@ export default function MainScreen() {
     return null;
   }
 
-  const handleLogin = () => {
-    router.navigate('/profile');
-  }
-
   return (
     <ImageBackground
       source={require('../../assets/background.jpg')}
       style={{ flex: 1 }}
       resizeMode='cover'
     >
-
       <View style={styles.container}>
         <Text style={styles.title}>Welcome to your Diary</Text>
 
-        <Pressable style={styles.button} onPress={handleLogin}>
+        <Pressable style={styles.button} onPress={() => promptAsync()} disabled={!request}>
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
-
       </View>
     </ImageBackground>
   )
@@ -63,8 +57,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingHorizontal: 20,
     paddingVertical: 5,
-    borderColor: 'grey',
-    borderWidth: 1,
   },
   buttonText: {
     fontFamily: 'CedarvilleCursive_400Regular',
