@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { addDoc, collection, getDocs, getFirestore, query } from 'firebase/firestore';
-import { DatabaseEntryType, ModalEntryType } from '../utils/types';
+import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, query } from 'firebase/firestore';
+import { DatabaseAddEntryType, DatabaseGetEntryType, ModalEntryType } from '../utils/types';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCuhsXfgkw903nQwSs8p3Gf3A71m4u0WZU",
@@ -22,7 +22,7 @@ export const db = getFirestore(app);
 // test db entry
 export async function addEntry(entry: ModalEntryType) {
   try {
-    const doc: DatabaseEntryType = {
+    const doc: DatabaseAddEntryType = {
       email: auth.currentUser?.email,
       timestamp: Date.now(),
       title: entry.entryTitle,
@@ -32,14 +32,40 @@ export async function addEntry(entry: ModalEntryType) {
 
     const docRef = await addDoc(collection(db, `users/${auth.currentUser!.uid}/entries`), doc);
     
-    console.log("Document written with ID: ", docRef.id);
+    console.log("Document written with ID:", docRef.id);
   } catch (e) {
-    console.error("Error adding document: ", e);
+    console.error("Error adding document:", e);
   }
 }
 
 export async function getEntries() {
-  const q = query(collection(db, `users/${auth.currentUser!.uid}/entries`))
-  const querySnapshot = await getDocs(q);
-  return querySnapshot;
+  try {
+    const q = query(collection(db, `users/${auth.currentUser!.uid}/entries`))
+    const querySnapshot = await getDocs(q);
+    
+    const docs: DatabaseGetEntryType[] = querySnapshot?.docs.map((item) => ({
+      id: item.id,
+      email: item.data().email,
+      timestamp: item.data().timestamp,
+      title: item.data().title,
+      content: item.data().content,
+      feeling: item.data().feeling
+    })) || [];
+    
+    const sortedDocs = [...docs].sort((a, b) => {
+      return a.timestamp.toLocaleString().localeCompare(b.timestamp.toLocaleString());
+    })
+
+    return sortedDocs;
+  } catch (e) {
+    console.error("Error getting documents:", e);
+  }
+}
+
+export async function deleteEntry(id: string) {
+  try {
+    await deleteDoc(doc(db, `users/${auth.currentUser!.uid}/entries`, id))
+  } catch (e) {
+    console.error("Error deleting document:", e);
+  }
 }

@@ -2,12 +2,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAtom } from 'jotai';
 import { useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { modalVisibleAtom } from '../utils/atoms';
+import { addEntryModalVisibleAtom } from '../utils/atoms';
 import { addEntry } from '../utils/firebase';
 import { Feeling, feelings, ModalEntryType } from '../utils/types';
 
-export function EntryModal() {
-  const [modalVisible, setModalVisible] = useAtom<boolean>(modalVisibleAtom);
+export function AddEntryModal() {
+  const [modalVisible, setModalVisible] = useAtom<boolean>(addEntryModalVisibleAtom);
   const [entryTitle, setEntryTitle] = useState<string>('');
   const [entryText, setEntryText] = useState<string>('');
   const [entryFeeling, setEntryFeeling] = useState<Feeling>(Feeling.Happy);

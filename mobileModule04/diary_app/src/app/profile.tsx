@@ -2,20 +2,23 @@ import { router } from 'expo-router';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AddEntryModal } from '../components/addEntryModal';
 import { EntryList } from '../components/entryList';
-import { EntryModal } from '../components/entryModal';
-import { entriesListAtom, modalVisibleAtom } from '../utils/atoms';
+import { GetEntryModal } from '../components/getEntryModal';
+import { addEntryModalVisibleAtom, entriesListAtom, getEntryModalVisibleAtom } from '../utils/atoms';
 import { auth, getEntries } from '../utils/firebase';
 import { useLogout } from '../utils/login';
+import { DatabaseGetEntryType } from '../utils/types';
 
 export default function ProfileScreen() {
-  const [modalVisible, setModalVisible] = useAtom<boolean>(modalVisibleAtom);
-  const [entriesList, setEntriesList] = useAtom(entriesListAtom);
+  const [addEntryModalVisible, setAddEntryModalVisible] = useAtom<boolean>(addEntryModalVisibleAtom);
+  const [getEntryModalVisible, setGetEntryModalVisible] = useAtom<boolean>(getEntryModalVisibleAtom);
+  const [entriesList, setEntriesList] = useAtom<DatabaseGetEntryType[] | undefined>(entriesListAtom);
 
   const handleLogout = () => {
     useLogout();
     router.replace('/');
-    setEntriesList(null);
+    setEntriesList([]);
   }
 
   const loadEntries = async () => {
@@ -24,15 +27,17 @@ export default function ProfileScreen() {
   }
 
   useEffect(() => {
-    if (!modalVisible) {
+    if (!addEntryModalVisible || !getEntryModalVisible) {
       loadEntries();
     }
-  }, [modalVisible]);
+  }, [addEntryModalVisible, getEntryModalVisible]);
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       
-      <EntryModal />
+      <AddEntryModal />
+
+      <GetEntryModal />
 
       <View style={styles.container}>
         <Text style={styles.title}>Welcome {auth.currentUser?.displayName}</Text>
@@ -41,7 +46,7 @@ export default function ProfileScreen() {
 
         <View style={{flex: 1}}/> 
 
-        <Pressable style={styles.button} onPress={() => setModalVisible(true)}>
+        <Pressable style={styles.button} onPress={() => setAddEntryModalVisible(true)}>
           <Text style={styles.buttonText}>New diary entry</Text>
         </Pressable>
 
@@ -63,6 +68,7 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   title: {
+    fontFamily: 'CedarvilleCursive_400Regular',
     fontSize: 40,
     textAlign: 'center',
   },

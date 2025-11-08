@@ -1,25 +1,8 @@
-import { CedarvilleCursive_400Regular, useFonts } from '@expo-google-fonts/cedarville-cursive';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
 import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useLogin } from '../utils/login';
 
-SplashScreen.preventAutoHideAsync();
-
 export default function MainScreen() {
-  const [loaded, error] = useFonts({ CedarvilleCursive_400Regular });
   const { promptAsync, request } = useLogin();
-
-  // Load font
-  useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded, error]);
-
-  if (!loaded && !error) {
-    return null;
-  }
 
   return (
     <ImageBackground

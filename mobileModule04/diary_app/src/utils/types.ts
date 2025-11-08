@@ -18,11 +18,23 @@ export type ModalEntryType = {
   entryFeeling: Feeling
 }
 
-export type DatabaseEntryType = {
+export type DatabaseAddEntryType = {
   email: string | null | undefined,
-  timestamp: any,
+  timestamp: number,
   title: string,
   content: string,
   feeling: Feeling,
 }
 
+export type DatabaseGetEntryType = {
+  id: string,
+  email: string,
+  timestamp: number,
+  title: string,
+  content: string,
+  feeling: Feeling,
+}
+
+export const mapFeelingTypeToIcon = (t: Feeling): IconNames => {
+  return feelings.find((f) => f.type === t)!.icon
+}
