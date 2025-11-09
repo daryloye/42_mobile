@@ -53,7 +53,7 @@ export async function getEntries() {
     })) || [];
     
     const sortedDocs = [...docs].sort((a, b) => {
-      return a.timestamp.toLocaleString().localeCompare(b.timestamp.toLocaleString());
+      return b.timestamp.toLocaleString().localeCompare(a.timestamp.toLocaleString());
     })
 
     return sortedDocs;

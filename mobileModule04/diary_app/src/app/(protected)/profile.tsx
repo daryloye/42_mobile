@@ -2,13 +2,13 @@ import { router } from 'expo-router';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { AddEntryModal } from '../components/addEntryModal';
-import { EntryList } from '../components/entryList';
-import { GetEntryModal } from '../components/getEntryModal';
-import { addEntryModalVisibleAtom, entriesListAtom, getEntryModalVisibleAtom } from '../utils/atoms';
-import { auth, getEntries } from '../utils/firebase';
-import { useLogout } from '../utils/login';
-import { DatabaseGetEntryType } from '../utils/types';
+import { AddEntryModal } from '../../components/addEntryModal';
+import { EntryList } from '../../components/entryList';
+import { GetEntryModal } from '../../components/getEntryModal';
+import { addEntryModalVisibleAtom, entriesListAtom, getEntryModalVisibleAtom } from '../../utils/atoms';
+import { useLogout } from '../../utils/auth';
+import { auth, getEntries } from '../../utils/firebase';
+import { DatabaseGetEntryType } from '../../utils/types';
 
 export default function ProfileScreen() {
   const [addEntryModalVisible, setAddEntryModalVisible] = useAtom<boolean>(addEntryModalVisibleAtom);
@@ -27,6 +27,7 @@ export default function ProfileScreen() {
   }
 
   useEffect(() => {
+    // fetch diary entries when modals are hidden
     if (!addEntryModalVisible || !getEntryModalVisible) {
       loadEntries();
     }

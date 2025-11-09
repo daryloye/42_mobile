@@ -1,24 +1,17 @@
 import { CedarvilleCursive_400Regular, useFonts } from '@expo-google-fonts/cedarville-cursive';
+import { Ionicons } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
 import { Provider } from 'jotai';
-import { useEffect } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-SplashScreen.preventAutoHideAsync();
-
 export default function RootLayout() {
-  const [loaded, error] = useFonts({ CedarvilleCursive_400Regular });
-  
-  // Load font
-  useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded, error]);
+  const [loaded] = useFonts({
+    CedarvilleCursive_400Regular,
+    ...Ionicons.font,
+  });
 
-  if (!loaded && !error) {
+  if (!loaded) {
     return null;
   }
 
@@ -29,7 +22,7 @@ export default function RootLayout() {
 
         <Stack screenOptions={{ headerShown: false, animation: 'none' }}>
           <Stack.Screen name='index' />
-          <Stack.Screen name='profile' />
+          <Stack.Screen name='login' />
         </Stack>
       </SafeAreaView>
     </Provider>

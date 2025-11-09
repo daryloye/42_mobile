@@ -1,9 +1,7 @@
+import { router } from 'expo-router';
 import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useLogin } from '../utils/login';
 
 export default function MainScreen() {
-  const { promptAsync, request } = useLogin();
-
   return (
     <ImageBackground
       source={require('../../assets/background.jpg')}
@@ -13,7 +11,7 @@ export default function MainScreen() {
       <View style={styles.container}>
         <Text style={styles.title}>Welcome to your Diary</Text>
 
-        <Pressable style={styles.button} onPress={() => promptAsync()} disabled={!request}>
+        <Pressable style={styles.button} onPress={() => router.push('/login')}>
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
       </View>
