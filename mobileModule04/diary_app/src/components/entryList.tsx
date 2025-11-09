@@ -27,52 +27,58 @@ export function EntryList() {
   }
 
   return (
-    <FlatList
-      style={styles.listContainer}
-      data={entriesList}
-      keyExtractor={(item) => item.id}
-      renderItem={
-        ({ item }) => (
-          <Pressable 
-            style={styles.itemContainer}
-            onPress={() => handlePress(item)}
-          >
-            {/* Date */}
-            <Date date={item.timestamp} />
-            
-            {/* Feeling */}
-            <Ionicons name={mapFeelingTypeToIcon(item.feeling)} size={30} color="black" />
-            
-            <View style={styles.verticalLine} />
+    <View style={styles.listContainer}>
+      <Text style={styles.title}>Your last diary entries</Text>
 
-            {/* Title */}
-            <Text 
-              style={styles.text}
-              numberOfLines={1}
-              ellipsizeMode='tail'
+      <FlatList
+        scrollEnabled={false}
+        data={entriesList}
+        keyExtractor={(item) => item.id}
+        renderItem={
+          ({ item }) => (
+            <Pressable
+              style={styles.itemContainer}
+              onPress={() => handlePress(item)}
             >
-              {item.title}
-            </Text>
-          
-          </Pressable>
-        )}
-      scrollEnabled={false}
-    />
+              {/* Date */}
+              <Date date={item.timestamp} />
+
+              {/* Feeling */}
+              <Ionicons name={mapFeelingTypeToIcon(item.feeling)} size={30} color="black" />
+
+              <View style={styles.verticalLine} />
+
+              {/* Title */}
+              <Text
+                style={styles.text}
+                numberOfLines={1}
+                ellipsizeMode='tail'
+              >
+                {item.title}
+              </Text>
+
+            </Pressable>
+          )}
+      />
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   listContainer: {
     width: '100%',
+    backgroundColor: '#A8DCAB',
+    flexGrow: 0,
+    padding: 10,
   },
   itemContainer: {
-    backgroundColor: '#A8DCAB',
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 10,
-    margin: 10,
-    padding: 20,
+    marginVertical: 5,
+    padding: 10,
     gap: 20,
+    backgroundColor: 'white',
   },
 
   verticalLine: {
@@ -89,6 +95,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
+  title: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontStyle: 'italic' ,
+  },
   text: {
     flexShrink: 1,
     fontFamily: 'CedarvilleCursive_400Regular',

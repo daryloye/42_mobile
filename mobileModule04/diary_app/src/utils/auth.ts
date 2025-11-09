@@ -3,26 +3,13 @@ import * as Google from 'expo-auth-session/providers/google';
 import { router } from 'expo-router';
 import { GithubAuthProvider, GoogleAuthProvider, signInWithCredential, signOut } from 'firebase/auth';
 import { useEffect } from 'react';
+import { Alert } from 'react-native';
 import { auth as firebaseAuth } from './firebase';
 
-const googleAndroidClientId = '199707899747-goio0r0i1smd42nvanpo2fnuag1ui6ee.apps.googleusercontent.com';
-const githubClientId = 'Ov23liSoK4wgngfGtVlc';
+const googleAndroidClientId = process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID;
+const githubClientId = process.env.EXPO_PUBLIC_GITHUB_CLIENT_ID;
+const githubClientSecret = process.env.EXPO_PUBLIC_GITHUB_CLIENT_SECRET;
 const redirectUri = AuthSession.makeRedirectUri({});
-
-async function fetchAccessTokenFromCode(code: string) {
-  const response = await fetch('https://github.com/login/oauth/access_token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      code
-    }),
-  });
-
-  console.log(response);
-
-  // const { access_token } = await response.json();
-  return '';
-}
 
 export function useLogin() {
   // Google OAuth
@@ -50,33 +37,57 @@ export function useLogin() {
 
   // Google login effect
   useEffect(() => {
-    if (googleResponse?.type === 'success') {
-      const { id_token } = googleResponse.params;
-      const credential = GoogleAuthProvider.credential(id_token);
+    const signInWithGoogle = async () => {
+      try {
+        if (googleResponse?.type === 'success') {
+          const { id_token } = googleResponse.params;
 
-      signInWithCredential(firebaseAuth, credential)
-        .then(() => router.replace('/profile'))
-        .catch((error) => console.error('Firebase Google sign in error:', error));
+          const credential = GoogleAuthProvider.credential(id_token);
+          await signInWithCredential(firebaseAuth, credential);
+          router.replace('/profile');
+        }
+      } catch (error: any) {
+        if (error.code === 'auth/account-exists-with-different-credential') {
+          Alert.alert('Error', 'This email is already associated with another sign-in method.');
+        } else {
+          console.error('Firebase Google sign in error:', error);
+        }
+      }
     }
+    signInWithGoogle();
   }, [googleResponse]);
 
 
   // GitHub login effect
   useEffect(() => {
     const signInWithGitHub = async () => {
-      if (githubResponse?.type === 'success') {
-        const { code } = githubResponse.params;
-        
-        // Exchange the code for an access token
-        const accessToken = await fetchAccessTokenFromCode(code);
+      try {
+        if (githubRequest && githubResponse?.type === 'success') {
+          const result = await AuthSession.exchangeCodeAsync(
+            {
+              clientId: githubClientId,
+              clientSecret: githubClientSecret,
+              code: githubResponse.params.code,
+              redirectUri,
+              extraParams: githubRequest.codeVerifier
+                ? { code_verifier: githubRequest.codeVerifier }
+                : undefined,
+            },
+            githubDiscovery
+          )
 
-        const credential = GithubAuthProvider.credential(accessToken);
-        signInWithCredential(firebaseAuth, credential)
-          .then(() => router.replace('/profile'))
-          .catch((error) => console.error('Firebase GitHub sign in error:', error));
-      }
-    };
-
+          const credential = GithubAuthProvider.credential(result.accessToken);
+          await signInWithCredential(firebaseAuth, credential);
+          router.replace('/profile');
+        }
+      } catch (error: any) {
+        if (error.code === 'auth/account-exists-with-different-credential') {
+          Alert.alert('Error', 'This email is already associated with another sign-in method.');
+        } else {
+          console.error('Firebase GitHub sign in error:', error);
+        }
+      };
+    }
     signInWithGitHub();
   }, [githubResponse]);
 
