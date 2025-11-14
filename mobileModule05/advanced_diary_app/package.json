@@ -12,6 +12,7 @@
     "@expo-google-fonts/cedarville-cursive": "^0.4.1",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-google-signin/google-signin": "^16.0.0",
+    "@react-navigation/material-top-tabs": "^7.4.2",
     "dayjs": "^1.11.19",
     "expo": "~54.0.20",
     "expo-auth-session": "~7.0.8",
@@ -30,6 +31,8 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
+    "react-native-calendars": "^1.1313.0",
+    "react-native-pager-view": "6.9.1",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0"
   },

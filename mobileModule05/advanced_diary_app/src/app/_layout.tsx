@@ -17,10 +17,13 @@ export default function RootLayout() {
 
   return (
     <Provider>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
         <StatusBar barStyle='light-content' />
 
-        <Stack screenOptions={{ headerShown: false, animation: 'none' }}>
+        <Stack screenOptions={{
+          headerShown: false,
+          animation: 'none',
+        }}>
           <Stack.Screen name='index' />
           <Stack.Screen name='login' />
         </Stack>

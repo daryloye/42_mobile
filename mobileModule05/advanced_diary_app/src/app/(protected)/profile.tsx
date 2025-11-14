@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AddEntryModal } from '../../components/addEntryModal';
-import { EntryList } from '../../components/entryList';
+import { EntriesList } from '../../components/entriesList';
 import { GetEntryModal } from '../../components/getEntryModal';
 import { StatsList } from '../../components/statsList';
 import { addEntryModalVisibleAtom, entriesListAtom, getEntryModalVisibleAtom } from '../../utils/atoms';
@@ -62,7 +62,10 @@ export default function ProfileScreen() {
         </View>
 
         {/* List of entries */}
-        <EntryList />
+        <View style={styles.entryListContainer}>
+          <Text style={styles.entryListTitle}>Your last diary entries</Text>
+          <EntriesList limitEntries={true} />
+        </View>
 
         {/* Stats List */}
         <StatsList />
@@ -115,5 +118,16 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-  }
+  },
+  entryListContainer: {
+    width: '100%',
+    backgroundColor: '#A8DCAB',
+    flexGrow: 0,
+    padding: 10,
+  },
+  entryListTitle: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontStyle: 'italic' ,
+  },
 })

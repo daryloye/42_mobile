@@ -17,7 +17,7 @@ export function StatsList() {
 
   return (
     <View style={styles.listContainer}>
-      <Text style={styles.title}>Your feel for your last {entriesLength} entries</Text>
+      <Text style={styles.title}>Your feel for your {entriesLength} entries</Text>
   
       <View style={styles.itemContainer}>
       {Object.entries(feelingsCount).map(([feeling, value]) => (
