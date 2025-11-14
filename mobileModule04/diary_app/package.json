@@ -11,7 +11,6 @@
   "dependencies": {
     "@expo-google-fonts/cedarville-cursive": "^0.4.1",
     "@react-native-async-storage/async-storage": "2.2.0",
-    "@react-native-firebase/auth": "^23.5.0",
     "@react-native-google-signin/google-signin": "^16.0.0",
     "dayjs": "^1.11.19",
     "expo": "~54.0.20",

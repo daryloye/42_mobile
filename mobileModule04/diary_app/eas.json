@@ -6,7 +6,10 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "GITHUB_CLIENT_SECRET": "${GITHUB_CLIENT_SECRET}"
+      }
     },
     "preview": {
       "distribution": "internal"
