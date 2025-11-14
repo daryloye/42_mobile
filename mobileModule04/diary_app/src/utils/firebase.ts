@@ -19,7 +19,6 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 
-// test db entry
 export async function addEntry(entry: ModalEntryType) {
   try {
     const doc: DatabaseAddEntryType = {

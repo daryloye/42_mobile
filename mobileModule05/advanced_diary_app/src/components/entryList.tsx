@@ -32,7 +32,7 @@ export function EntryList() {
 
       <FlatList
         scrollEnabled={false}
-        data={entriesList}
+        data={entriesList?.slice(0, 2)}
         keyExtractor={(item) => item.id}
         renderItem={
           ({ item }) => (

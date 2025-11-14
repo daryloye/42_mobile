@@ -6,6 +6,7 @@ import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-nati
 import { AddEntryModal } from '../../components/addEntryModal';
 import { EntryList } from '../../components/entryList';
 import { GetEntryModal } from '../../components/getEntryModal';
+import { StatsList } from '../../components/statsList';
 import { addEntryModalVisibleAtom, entriesListAtom, getEntryModalVisibleAtom } from '../../utils/atoms';
 import { useLogout } from '../../utils/auth';
 import { auth, getEntries } from '../../utils/firebase';
@@ -62,6 +63,9 @@ export default function ProfileScreen() {
 
         {/* List of entries */}
         <EntryList />
+
+        {/* Stats List */}
+        <StatsList />
 
         <View style={{ flex: 1 }} />
 
